@@ -40,4 +40,26 @@ describe 'Food Endpoints' do
       expect(response.status).to eq(404)
     end
   end
+
+  describe 'POST /api/v1/foods' do
+    it 'creates new food record with proper parameters' do
+      food_name = 'orange'
+      food_calories = 200
+
+      post '/api/v1/foods', params: { food: {name: food_name, calories: food_calories } }
+
+      food = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to be_success
+      expect(Food.all.last.name).to eq(food_name)
+      expect(Food.all.last.calories).to eq(food_calories)
+      expect(food[:name]).to eq(food_name)
+      expect(food[:calories]).to eq(food_calories)
+    end
+
+    it 'returns a 404 if record is not created' do
+
+    end
+  end
+
 end
