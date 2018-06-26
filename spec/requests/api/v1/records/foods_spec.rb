@@ -42,7 +42,7 @@ describe 'Food Endpoints' do
   end
 
   describe 'POST /api/v1/foods' do
-    it 'creates new food record with proper parameters' do
+    it 'creates new food record with proper parameters and returns food object as json' do
       food_name = 'orange'
       food_calories = 200
 
@@ -72,4 +72,19 @@ describe 'Food Endpoints' do
     end
   end
 
+  describe 'PATCH /api/v1/foods/:id' do
+    it 'updates object if proper parameters are present, and returns food object as json' do
+      food_item = create(:food, name: 'apple', calories: 100)
+      new_name = 'orange'
+      new_calories = 200
+
+      patch "/api/v1/foods/#{food_item.id}", params: { food: {name: new_name, calories: new_calories } }
+
+      food = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to be_success
+      expect(food[:name]).to eq(new_name)
+      expect(food[:calories]).to eq(new_calories)
+    end
+  end
 end

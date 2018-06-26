@@ -4,16 +4,16 @@ class Api::V1::FoodsController < ApplicationController
   end
 
   def show
-    food = Food.find(params[:id])
-    if food
-      render json: food
-    else
-      render status: :not_found
-    end
+    render json: Food.find(params[:id])
   end
 
   def create
     food = Food.create!(food_params)
+    render json: food
+  end
+
+  def update
+    food = Food.update(food_params).first
     render json: food
   end
 
