@@ -8,8 +8,7 @@ class Api::V1::FoodsController < ApplicationController
   end
 
   def create
-    food = Food.create!(food_params)
-    render json: food
+    render json: Food.create!(food_params)
   end
 
   def update
@@ -18,6 +17,11 @@ class Api::V1::FoodsController < ApplicationController
     food.calories = food_params[:calories]
     food.save!
     render json: food
+  end
+
+  def destroy
+    Food.find(params[:id]).delete
+    render status: 204
   end
 
   private

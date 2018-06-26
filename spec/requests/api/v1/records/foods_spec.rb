@@ -107,4 +107,22 @@ describe 'Food Endpoints' do
       expect(Food.last.calories).to eq(100)
     end
   end
+
+  describe 'DELETE /api/v1/foods/:id' do
+    it 'deletes existing object and returns a 204' do
+      food_item = create(:food, name: 'apple', calories: 100)
+
+      delete "/api/v1/foods/#{food_item.id}"
+
+      expect(response).to be_success
+      expect(response.status).to eq(204)
+    end
+
+    it 'returns a 404 if object does not exist' do
+      delete "/api/v1/foods/1"
+
+      expect(response).to_not be_success
+      expect(response.status).to eq(404)
+    end
+  end
 end
