@@ -86,5 +86,25 @@ describe 'Food Endpoints' do
       expect(food[:name]).to eq(new_name)
       expect(food[:calories]).to eq(new_calories)
     end
+
+    it 'returns a 404 if name is missing' do
+      food_item = create(:food, name: 'apple', calories: 100)
+      patch "/api/v1/foods/#{food_item.id}", params: { food: {calories: 400 } }
+
+      expect(response).to_not be_success
+      expect(response.status).to eq(404)
+      expect(Food.last.name).to eq('apple')
+      expect(Food.last.calories).to eq(100)
+    end
+
+    it 'returns a 404 if calories is missing' do
+      food_item = create(:food, name: 'apple', calories: 100)
+      patch "/api/v1/foods/#{food_item.id}", params: { food: {name: 'orange' } }
+
+      expect(response).to_not be_success
+      expect(response.status).to eq(404)
+      expect(Food.last.name).to eq('apple')
+      expect(Food.last.calories).to eq(100)
+    end
   end
 end

@@ -13,7 +13,10 @@ class Api::V1::FoodsController < ApplicationController
   end
 
   def update
-    food = Food.update(food_params).first
+    food = Food.find(params[:id])
+    food.name = food_params[:name]
+    food.calories = food_params[:calories]
+    food.save!
     render json: food
   end
 
