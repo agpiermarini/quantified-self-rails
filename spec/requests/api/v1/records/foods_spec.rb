@@ -57,8 +57,18 @@ describe 'Food Endpoints' do
       expect(food[:calories]).to eq(food_calories)
     end
 
-    it 'returns a 404 if record is not created' do
+    it 'returns a 404 if name is missing' do
+      post '/api/v1/foods', params: { food: {calories: 400 } }
 
+      expect(response).to_not be_success
+      expect(response.status).to eq(404)
+    end
+
+    it 'returns a 404 if calories is missing' do
+      post '/api/v1/foods', params: { food: {name: 'orange' } }
+
+      expect(response).to_not be_success
+      expect(response.status).to eq(404)
     end
   end
 
