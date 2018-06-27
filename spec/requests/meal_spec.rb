@@ -44,4 +44,44 @@ describe 'Meal Endpoints' do
       expect(response.status).to be(404)
     end
   end
+
+  describe 'POST /api/v1/meals/:meal_id/foods' do
+    it 'creates a new record in the meal foods table and responds with a message and 201 status' do
+      meal = create(:meal)
+      food_name = 'orange'
+      food_calories = 200
+
+      post "/api/v1/meals/#{meal.id}/foods", params: { food: {name: food_name, calories: food_calories } }
+
+      msg = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to be_success
+      expect(response.status).to eq(201)
+      expect(msg[:message]).to eq("Successfully added #{food_name} to #{meal.name}")
+      expect(MealFood.last.meal_id).to eq(meal.id)
+      expect(MealFood.last.food_id).to eq(Food.last.id)
+    end
+
+    it 'returns a 404 if name is missing' do
+      meal = create(:meal)
+      food_name = 'orange'
+      food_calories = 200
+
+      post "/api/v1/meals/#{meal.id}/foods", params: { food: {calories: food_calories } }
+
+      expect(response).to_not be_success
+      expect(response.status).to eq(404)
+    end
+
+    it 'returns a 404 if calories is missing' do
+      meal = create(:meal)
+      food_name = 'orange'
+      food_calories = 200
+      
+      post "/api/v1/meals/#{meal.id}/foods", params: { food: {name: food_name} }
+
+      expect(response).to_not be_success
+      expect(response.status).to eq(404)
+    end
+  end
 end
