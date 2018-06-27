@@ -20,7 +20,7 @@ describe 'Meal Endpoints' do
   end
 
   describe 'GET /api/v1/meals/:meal_id/foods' do
-    it 'returns all database entries for meals' do
+    it 'returns all database entries for foods corresponding to an existing meal id' do
       meal = create(:meal)
 
       get "/api/v1/meals/#{meal.id}/foods"
@@ -34,6 +34,14 @@ describe 'Meal Endpoints' do
       expect(foods[1][:calories]).to eq(meal.foods[1].calories)
       expect(foods[2][:name]).to eq(meal.foods[2].name)
       expect(foods[2][:calories]).to eq(meal.foods[2].calories)
+    end
+
+    it 'returns a 404 if unsuccessful' do
+
+      get "/api/v1/meals/5/foods"
+
+      expect(response).to_not be_success
+      expect(response.status).to be(404)
     end
   end
 end
