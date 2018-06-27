@@ -6,8 +6,13 @@ class Api::V1::MealFoodsController < ApplicationController
   def create
     meal = Meal.find(params[:meal_id])
     meal.foods.create!(food_params)
-    require 'pry'; binding.pry
     render json: { message: "Successfully added #{params[:food][:name]} to #{meal.name}" }.to_json , status: 201
+  end
+
+  def destroy
+    message = "Successfully removed %s from %s" % [Food.find(params[:food_id])[:name], Meal.find(params[:meal_id])[:name]]
+    MealFood.find_by(meal_id: params[:meal_id], food_id: params[:food_id]).destroy!
+    render json: { message: message}
   end
 
   private
