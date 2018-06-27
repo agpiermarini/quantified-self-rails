@@ -9,7 +9,7 @@ describe 'Food Endpoints' do
 
       foods = JSON.parse(response.body, symbolize_names: true)
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(foods.length).to eq(3)
       expect(foods.first[:name]).to eq(food_list.first.name)
       expect(foods.first[:calories]).to eq(food_list.first.calories)
@@ -28,7 +28,7 @@ describe 'Food Endpoints' do
 
       food = JSON.parse(response.body, symbolize_names: true)
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(food[:name]).to eq(food_item.name)
       expect(food[:calories]).to eq(food_item.calories)
     end
@@ -36,7 +36,7 @@ describe 'Food Endpoints' do
     it 'returns a 404 if there is no food object corresponding to the provided id' do
       get "/api/v1/foods/1"
 
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(response.status).to eq(404)
     end
   end
@@ -50,7 +50,7 @@ describe 'Food Endpoints' do
 
       food = JSON.parse(response.body, symbolize_names: true)
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(Food.all.last.name).to eq(food_name)
       expect(Food.all.last.calories).to eq(food_calories)
       expect(food[:name]).to eq(food_name)
@@ -60,14 +60,14 @@ describe 'Food Endpoints' do
     it 'returns a 404 if name is missing' do
       post '/api/v1/foods', params: { food: {calories: 400 } }
 
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(response.status).to eq(404)
     end
 
     it 'returns a 404 if calories is missing' do
       post '/api/v1/foods', params: { food: {name: 'orange' } }
 
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(response.status).to eq(404)
     end
   end
@@ -82,7 +82,7 @@ describe 'Food Endpoints' do
 
       food = JSON.parse(response.body, symbolize_names: true)
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(food[:name]).to eq(new_name)
       expect(food[:calories]).to eq(new_calories)
     end
@@ -91,7 +91,7 @@ describe 'Food Endpoints' do
       food_item = create(:food, name: 'apple', calories: 100)
       patch "/api/v1/foods/#{food_item.id}", params: { food: {calories: 400 } }
 
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(response.status).to eq(404)
       expect(Food.last.name).to eq('apple')
       expect(Food.last.calories).to eq(100)
@@ -101,7 +101,7 @@ describe 'Food Endpoints' do
       food_item = create(:food, name: 'apple', calories: 100)
       patch "/api/v1/foods/#{food_item.id}", params: { food: {name: 'orange' } }
 
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(response.status).to eq(404)
       expect(Food.last.name).to eq('apple')
       expect(Food.last.calories).to eq(100)
@@ -114,14 +114,14 @@ describe 'Food Endpoints' do
 
       delete "/api/v1/foods/#{food_item.id}"
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.status).to eq(204)
     end
 
     it 'returns a 404 if object does not exist' do
       delete "/api/v1/foods/1"
 
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(response.status).to eq(404)
     end
   end
