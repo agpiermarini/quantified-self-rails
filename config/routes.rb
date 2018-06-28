@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       resources :meals, only: [:index] do
         get 'foods',             to: 'meal_foods#index'
         get 'foods/:food_id',    to: 'meal_foods#show'
-        post 'foods',            to: 'meal_foods#create'
+        post 'foods/:food_id',            to: 'meal_foods#create'
         delete 'foods/:food_id', to: 'meal_foods#destroy'
       end
     end
