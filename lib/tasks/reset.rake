@@ -7,9 +7,9 @@ namespace :reset do
     Food.destroy_all
     Meal.destroy_all
 
-
-    %w(Breakfast Lunch Snacks Dinner).each do | meal |
-      Meal.create(name: meal)
-    end
+    Meal.create(name: 'Breakfast')
+    Meal.create(name: 'Snacks')
+    Meal.create(name: 'Lunch')
+    Meal.create(name: 'Dinner')
   end
 end
