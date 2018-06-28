@@ -58,7 +58,16 @@ describe 'Meal Endpoints' do
       expect(response.status).to eq(201)
       expect(msg[:message]).to eq("Successfully added #{food.name} to #{meal.name}")
       expect(MealFood.last.meal_id).to eq(meal.id)
-      expect(MealFood.last.food_id).to eq(Food.last.id)
+      expect(MealFood.last.food_id).to eq(food.id)
+    end
+
+    it 'returns a 404 if meal does not exist' do
+      food = create(:food)
+
+      post "/api/v1/meals/5/foods/#{food.id}"
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
     end
 
     it 'returns a 404 if food does not exist' do
