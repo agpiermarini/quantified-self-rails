@@ -5,8 +5,9 @@ class Api::V1::MealFoodsController < ApplicationController
 
   def create
     meal = Meal.find(params[:meal_id])
-    meal.foods.create!(food_params)
-    render json: { message: "Successfully added #{params[:food][:name]} to #{meal.name}" }.to_json , status: 201
+    food = Food.find(params[:food_id])
+    meal.foods << food
+    render json: { message: "Successfully added #{food.name} to #{meal.name}" }.to_json , status: 201
   end
 
   def destroy
@@ -14,9 +15,4 @@ class Api::V1::MealFoodsController < ApplicationController
     MealFood.find_by(meal_id: params[:meal_id], food_id: params[:food_id]).destroy!
     render json: { message: message}
   end
-
-  private
-    def food_params
-      params.require(:food).permit(:name, :calories)
-    end
 end
